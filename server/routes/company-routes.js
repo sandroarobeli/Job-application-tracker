@@ -1,4 +1,5 @@
 const express = require("express");
+const { check } = require("express-validator");
 
 const {
   listAllCompanies,
@@ -7,14 +8,17 @@ const {
   editCompany,
 } = require("../controllers/company-controllers");
 
-// Initializing the router object
 const router = express.Router();
 
 // List all Companies
 router.get("/", listAllCompanies);
 
 // Add a new Company
-router.post("/", addNewCompany);
+router.post(
+  "/",
+  [check("name").not().isEmpty().trim().escape()],
+  addNewCompany
+);
 
 // Edit Company
 router.patch("/", editCompany);
